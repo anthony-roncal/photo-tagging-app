@@ -1,10 +1,20 @@
+import { HashRouter, Routes, Route } from "react-router-dom";
 import '../styles/App.css';
+import Nav from './Nav';
+import Home from './Home';
+import Leaderboard from "./Leaderboard";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello</h1>
-    </div>
+    <HashRouter>
+      <div className="App">
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+        </Routes>
+      </div>
+    </HashRouter>
   );
 }
 

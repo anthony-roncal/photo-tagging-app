@@ -1,3 +1,8 @@
 .App {
   text-align: center;
 }
+
+.btn-row {
+  display: flex;
+  justify-content: center;
+}

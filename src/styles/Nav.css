@@ -1,0 +1,29 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid grey;
+    padding: 10px 0;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    width: 50%;
+}
+
+h1 {
+    padding-left: 30px;
+}
+
+li {
+    line-height: 50px;
+    font-size: 20px;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+    color: black;
+}

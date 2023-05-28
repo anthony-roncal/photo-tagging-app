@@ -1,0 +1,26 @@
+.leaderboard {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.leaderboard > div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.leaderboard-container {
+    border: 1px solid black;
+    padding: 20px;
+    min-width: 300px;
+}
+
+.leaderboard-header,
+.leaderboard-row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.leaderboard-header {
+    background-color: rgb(240, 240, 240);
+    font-weight: 600;
+}

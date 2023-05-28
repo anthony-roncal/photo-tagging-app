@@ -6,15 +6,17 @@ import {
     getDownloadURL,
 } from 'firebase/storage';
 
+const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
+
 function Home() {
     const [imgUrl, setImgUrl] = useState('');
 
     const handleLevelButtonClick = (e) => {
+        setImgUrl(LOADING_IMAGE_URL);
         getImageUrl(`poke${e.target.dataset.level}.webp`);
     };
 
     const getImageUrl = async (filePath) => {
-        // const filePath = `poke1.webp`;
         const newImageRef = ref(getStorage(), filePath);
         const publicImageUrl = await getDownloadURL(newImageRef);
         setImgUrl(publicImageUrl);
@@ -22,7 +24,6 @@ function Home() {
 
     return (
         <div className="Home">
-            <h1>Home</h1>
             <div className='btn-row'>
                 <button onClick={handleLevelButtonClick} data-level={'1'}>Level 1</button>
                 <button onClick={handleLevelButtonClick} data-level={'2'}>Level 2</button>

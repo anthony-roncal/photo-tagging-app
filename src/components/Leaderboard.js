@@ -48,7 +48,6 @@ const Leaderboard = () => {
                         <li className='leaderboard-header'>
                             <p>Name</p>
                             <p>Time</p>
-                            <p>Level</p>
                         </li>
                         {scores.map(score => {
                             if (score.level === '1') {
@@ -56,7 +55,6 @@ const Leaderboard = () => {
                                     <li className='leaderboard-row'>
                                         <p>{score.name}</p>
                                         <p>{score.time}</p>
-                                        <p>{score.level}</p>
                                     </li>
                                 );
                             }
@@ -76,7 +74,6 @@ const Leaderboard = () => {
                                     <li className='leaderboard-row'>
                                         <p>{score.name}</p>
                                         <p>{score.time}</p>
-                                        <p>{score.level}</p>
                                     </li>
                                 );
                             }
@@ -96,7 +93,6 @@ const Leaderboard = () => {
                                     <li className='leaderboard-row'>
                                         <p>{score.name}</p>
                                         <p>{score.time}</p>
-                                        <p>{score.level}</p>
                                     </li>
                                 );
                             }

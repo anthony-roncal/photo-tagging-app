@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const Stopwatch = ({ isActive, setIsActive }) => {
-    const [time, setTime] = useState(0);
+const Stopwatch = ({ isActive, setIsActive, time, setTime, formatTime }) => {
 
     const startStopwatch = () => {
         setIsActive(true);
@@ -14,13 +13,6 @@ const Stopwatch = ({ isActive, setIsActive }) => {
     const resetStopwatch = () => {
         setIsActive(false);
         setTime(0);
-    };
-
-    const formatTime = (timeInMs) => {
-        let min = ('0' + Math.floor((timeInMs / 60000))).slice(-2);
-        let sec = ('0' + Math.floor((timeInMs / 1000) % 60)).slice(-2);
-        let ms = ('0' + ((timeInMs / 10) % 100)).slice(-2);
-        return `${min}:${sec}:${ms}`;
     };
 
     useEffect(() => {

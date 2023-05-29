@@ -32,7 +32,6 @@ const Leaderboard = () => {
                         level: score.level, name: score.name
                     }, ...scores]);
                 }
-                console.log(scores);
             }
         });
     });

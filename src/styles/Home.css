@@ -1,33 +1,71 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .btn-row {
     display: flex;
     justify-content: center;
-  }
-  
-  .play-area {
+}
+
+.play-area {
     position: relative;
-  }
-  
-  .dropdown-menu {
+    min-width: 1224px;
+    max-width: 1224px;
+}
+
+.dropdown-menu {
     z-index: 1;
     position: absolute;
     background-color: lightgray;
     padding: 10px 0;
     border-radius: 5px;
-  }
-  
-  .dropdown-menu li {
+}
+
+.dropdown-menu li {
+    display: flex;
     height: 30px;
     padding: 0 10px;
     border-radius: 5px;
     cursor: pointer;
+    align-items: center;
+}
 
-  }
-
-  .dropdown-menu li:hover {
+.dropdown-menu li:hover {
     border: 1px solid grey;
-  }
-  
-  .dropdown-menu p {
+}
+
+.dropdown-menu p {
     line-height: 30px;
-    font-size: 16px;
-  }
+    font-size: 14px;
+}
+
+.char-box {
+    position: absolute;
+    border: 5px solid red;
+}
+
+.pikachu {
+    width: 60px;
+    height: 50px;
+}
+
+.psyduck {
+    width: 47px;
+    height: 47px;
+}
+
+.blissey {
+    width: 65px;
+    height: 70px;
+}
+
+.testdata {
+    position: absolute;
+    left: 0px;
+    top: 600px;
+    background-color: white;
+    z-index: 2;
+    border: 1px solid black;
+}

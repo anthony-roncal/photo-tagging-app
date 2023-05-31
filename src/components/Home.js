@@ -30,7 +30,7 @@ const Home = () => {
     const [time, setTime] = useState(0);
     const [potentialChars, setPotentialChars] = useState([
         { level: '1', name: 'Pikachu', isFound: false },
-        { level: '1', name: 'Ekans', isFound: false },
+        { level: '1', name: 'Psyduck', isFound: false },
         { level: '1', name: 'Blissey', isFound: false },
         { level: '2', name: 'Pikachu', isFound: false },
         { level: '2', name: 'Metapod', isFound: false },
@@ -56,9 +56,11 @@ const Home = () => {
     };
 
     const handleImageClick = (e) => {
+        let topOffset = 275;
+        let leftOffset = (window.innerWidth - 1280)/2;
         setShowDropdown(!showDropdown);
         if (e.target.className === 'play-img')
-            setDropdownCoords({ left: (e.pageX + 20), top: (e.pageY - 275) });
+            setDropdownCoords({ left: e.pageX - leftOffset, top: e.pageY - topOffset });
     }
 
     const formatTime = (timeInMs) => {
@@ -94,7 +96,15 @@ const Home = () => {
             {(level > 0) && <h1>Level {level}</h1>}
             <div className='play-area' >
                 <img className='play-img' src={imgUrl} onClick={handleImageClick} />
-                {showDropdown && <CharacterDropdown potentialChars={potentialChars.filter(char => char.level === level)} position={dropdownCoords} />}
+                {showDropdown && <CharacterDropdown potentialChars={potentialChars}
+                    setPotentialChars={setPotentialChars} level={level} position={dropdownCoords}
+                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} />}
+                {level === '1' && potentialChars.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound &&
+                    <div className='char-box pikachu' style={{ left: `888px`, top: `405px` }}></div>}
+                {level === '1' && potentialChars.filter(char => char.name === 'Psyduck' && char.level === '1')[0].isFound &&
+                    <div className='char-box psyduck' style={{ left: `247px`, top: `255px` }}></div>}
+                {level === '1' && potentialChars.filter(char => char.name === 'Blissey' && char.level === '1')[0].isFound &&
+                    <div className='char-box blissey' style={{ left: `638px`, top: `588px` }}></div>}
             </div>
         </div>
     );

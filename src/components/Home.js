@@ -1,5 +1,5 @@
-import '../styles/App.css';
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
+import '../styles/Home.css';
 import {
     getStorage,
     ref,
@@ -17,16 +17,30 @@ import {
     updateDoc,
     doc,
     serverTimestamp,
-  } from 'firebase/firestore';
+} from 'firebase/firestore';
 import Stopwatch from './Stopwatch';
+import CharacterDropdown from './CharacterDropdown';
 
 const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
 
-function Home() {
+const Home = () => {
     const [level, setLevel] = useState(0);
     const [imgUrl, setImgUrl] = useState('');
     const [isActive, setIsActive] = useState(false);
     const [time, setTime] = useState(0);
+    const [potentialChars, setPotentialChars] = useState([
+        { level: '1', name: 'Pikachu', isFound: false },
+        { level: '1', name: 'Ekans', isFound: false },
+        { level: '1', name: 'Blissey', isFound: false },
+        { level: '2', name: 'Pikachu', isFound: false },
+        { level: '2', name: 'Metapod', isFound: false },
+        { level: '2', name: 'Dragonair', isFound: false },
+        { level: '3', name: 'Pikachu', isFound: false },
+        { level: '3', name: 'Teddiursa', isFound: false },
+        { level: '3', name: 'Meowth', isFound: false }
+    ]);
+    const [dropdownCoords, setDropdownCoords] = useState({ left: 0, top: 0 });
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const handleLevelButtonClick = (e) => {
         let selectedLevel = e.target.dataset.level;
@@ -40,6 +54,12 @@ function Home() {
         const publicImageUrl = await getDownloadURL(newImageRef);
         setImgUrl(publicImageUrl);
     };
+
+    const handleImageClick = (e) => {
+        setShowDropdown(!showDropdown);
+        if (e.target.className === 'play-img')
+            setDropdownCoords({ left: (e.pageX + 20), top: (e.pageY - 275) });
+    }
 
     const formatTime = (timeInMs) => {
         let min = ('0' + Math.floor((timeInMs / 60000))).slice(-2);
@@ -69,10 +89,13 @@ function Home() {
                 <button onClick={handleLevelButtonClick} data-level={'2'}>Level 2</button>
                 <button onClick={handleLevelButtonClick} data-level={'3'}>Level 3</button>
             </div>
-            <Stopwatch isActive={isActive} setIsActive={setIsActive} time={time} setTime={setTime} formatTime={formatTime}/>
+            <Stopwatch isActive={isActive} setIsActive={setIsActive} time={time} setTime={setTime} formatTime={formatTime} />
             <button onClick={saveScore}>Test Score</button>
             {(level > 0) && <h1>Level {level}</h1>}
-            <img src={imgUrl}></img>
+            <div className='play-area' >
+                <img className='play-img' src={imgUrl} onClick={handleImageClick} />
+                {showDropdown && <CharacterDropdown potentialChars={potentialChars.filter(char => char.level === level)} position={dropdownCoords} />}
+            </div>
         </div>
     );
 }

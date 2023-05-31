@@ -1,8 +1,17 @@
-.App {
-  text-align: center;
+* {
+  list-style-type: none;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.btn-row {
-  display: flex;
-  justify-content: center;
+ul {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.App {
+  text-align: center;
 }

@@ -1,5 +1,5 @@
+import { React, useState, useEffect } from 'react';
 import '../styles/Leaderboard.css';
-import { useState, useEffect } from 'react';
 import {
     getFirestore,
     collection,

@@ -1,0 +1,33 @@
+.btn-row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .play-area {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    z-index: 1;
+    position: absolute;
+    background-color: lightgray;
+    padding: 10px 0;
+    border-radius: 5px;
+  }
+  
+  .dropdown-menu li {
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+  }
+
+  .dropdown-menu li:hover {
+    border: 1px solid grey;
+  }
+  
+  .dropdown-menu p {
+    line-height: 30px;
+    font-size: 16px;
+  }

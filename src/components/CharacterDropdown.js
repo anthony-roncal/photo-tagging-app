@@ -15,32 +15,17 @@ const CharacterDropdown = ({ potentialChars, setPotentialChars, level, position,
         const querySnapshot = await getDocs(q);
         let results = [];
         querySnapshot.forEach((doc) => {
-            // console.log(doc.id, " => ", doc.data());
             results.push(doc.data());
         });
         return results;
     }
 
-    // useEffect(() => {
-    //     async function getCoordinates() {
-    //         // const q = query(collection(getFirestore(), "coordinates"));
-    //         const q = query(collection(getFirestore(), 'coordinates'), where('level', '==', level.toString()));
-
-    //         const querySnapshot = await getDocs(q);
-    //         querySnapshot.forEach((doc) => {
-    //             console.log(doc.id, " => ", doc.data());
-    //         });
-    //     }
-    //     getCoordinates();
-    // }, []);
-
     const handleCharSelect = (e) => {
         let result = potentialChars.filter(char => char.name === e.target.dataset.char && char.level === level);
         if (result.length === 1) {
             let selectedChar = result[0];
-            // validate that position is within character space
+            // validate click is within character space
             getCoordinates(selectedChar.name.toLowerCase()).then(result => {
-                // console.log(result[0].minX, result[0].maxX, result[0].minY, result[0].maxY);
                 if (clickCoords.x > result[0].minX && clickCoords.x < result[0].maxX && clickCoords.y > result[0].minY && clickCoords.y < result[0].maxY) {
                     console.log('found!');
                     selectedChar.isFound = true;

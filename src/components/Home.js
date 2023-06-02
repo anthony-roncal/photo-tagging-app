@@ -55,7 +55,6 @@ const Home = () => {
         setShowDropdown(!showDropdown);
         if (e.target.className === 'play-img')
             setDropdownCoords({ left: e.pageX - leftOffset, top: e.pageY - topOffset });
-        // console.log(`x: ${e.pageX}, y: ${e.pageY}`);
         setClickCoords({x: e.pageX, y: e.pageY});
     }
 
@@ -120,36 +119,3 @@ const Home = () => {
 }
 
 export default Home;
-
-// Level 1
-// Pikachu
-// x: 897-958
-// y: 664-715
-// Psyduck
-// x: 256-304
-// y: 514-562
-// Blissey
-// x: 647-713
-// y: 847-918
-
-// Level 2
-// Pikachu
-// x: 299-340
-// y: 1209-1260
-// Metapod
-// x: 744-1010
-// y: 1001-1042
-// Dragonair
-// x: 779-808
-// y: 491-537
-
-// Level 3
-// Pikachu
-// x: 204-253
-// y: 867-913
-// Teddiursa
-// x: 1167-1201
-// y: 916-954
-// Meowth
-// x: 724-755
-// y: 582-626

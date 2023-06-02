@@ -43,29 +43,5 @@
 
 .char-box {
     position: absolute;
-    border: 5px solid red;
-}
-
-.pikachu {
-    width: 60px;
-    height: 50px;
-}
-
-.psyduck {
-    width: 47px;
-    height: 47px;
-}
-
-.blissey {
-    width: 65px;
-    height: 70px;
-}
-
-.testdata {
-    position: absolute;
-    left: 0px;
-    top: 600px;
-    background-color: white;
-    z-index: 2;
-    border: 1px solid black;
+    border: 3px solid red;
 }

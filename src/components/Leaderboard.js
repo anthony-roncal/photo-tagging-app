@@ -1,17 +1,12 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import '../styles/Leaderboard.css';
 import {
     getFirestore,
     collection,
-    addDoc,
     query,
     orderBy,
     limit,
-    onSnapshot,
-    setDoc,
-    updateDoc,
-    doc,
-    serverTimestamp,
+    onSnapshot
 } from 'firebase/firestore';
 
 const Leaderboard = () => {
@@ -22,16 +17,12 @@ const Leaderboard = () => {
     // Start listening to the query.
     onSnapshot(recentScoresQuery, function (snapshot) {
         snapshot.docChanges().forEach(function (change) {
-            if (change.type === 'removed') {
-                //   deleteMessage(change.doc.id);
-            } else {
-                var score = change.doc.data();
-                if (!scores.some(score => change.doc.id === score.id)) {
-                    setScores([{
-                        id: change.doc.id, timestamp: score.timestamp, time: score.time,
-                        level: score.level, name: score.name
-                    }, ...scores]);
-                }
+            var score = change.doc.data();
+            if (!scores.some(score => change.doc.id === score.id)) {
+                setScores([{
+                    id: change.doc.id, timestamp: score.timestamp, time: score.time,
+                    level: score.level, name: score.name
+                }, ...scores]);
             }
         });
     });

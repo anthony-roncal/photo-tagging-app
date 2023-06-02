@@ -9,13 +9,6 @@ import {
     getFirestore,
     collection,
     addDoc,
-    query,
-    orderBy,
-    limit,
-    onSnapshot,
-    setDoc,
-    updateDoc,
-    doc,
     serverTimestamp,
 } from 'firebase/firestore';
 import Stopwatch from './Stopwatch';
@@ -24,7 +17,7 @@ import CharacterDropdown from './CharacterDropdown';
 const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
 
 const Home = () => {
-    const [level, setLevel] = useState(0);
+    const [level, setLevel] = useState('0');
     const [imgUrl, setImgUrl] = useState('');
     const [isActive, setIsActive] = useState(false);
     const [time, setTime] = useState(0);
@@ -41,6 +34,7 @@ const Home = () => {
     ]);
     const [dropdownCoords, setDropdownCoords] = useState({ left: 0, top: 0 });
     const [showDropdown, setShowDropdown] = useState(false);
+    const [clickCoords, setClickCoords] = useState({x: 0, y: 0});
 
     const handleLevelButtonClick = (e) => {
         let selectedLevel = e.target.dataset.level;
@@ -57,10 +51,12 @@ const Home = () => {
 
     const handleImageClick = (e) => {
         let topOffset = 275;
-        let leftOffset = (window.innerWidth - 1280)/2;
+        let leftOffset = (window.innerWidth - 1280) / 2;
         setShowDropdown(!showDropdown);
         if (e.target.className === 'play-img')
             setDropdownCoords({ left: e.pageX - leftOffset, top: e.pageY - topOffset });
+        // console.log(`x: ${e.pageX}, y: ${e.pageY}`);
+        setClickCoords({x: e.pageX, y: e.pageY});
     }
 
     const formatTime = (timeInMs) => {
@@ -73,6 +69,7 @@ const Home = () => {
     async function saveScore() {
         try {
             await addDoc(collection(getFirestore(), 'scores'), {
+                //TODO: build prompt to ask player name
                 name: 'AAA',
                 level: level,
                 time: formatTime(time),
@@ -98,16 +95,61 @@ const Home = () => {
                 <img className='play-img' src={imgUrl} onClick={handleImageClick} />
                 {showDropdown && <CharacterDropdown potentialChars={potentialChars}
                     setPotentialChars={setPotentialChars} level={level} position={dropdownCoords}
-                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} />}
+                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords}/>}
                 {level === '1' && potentialChars.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound &&
-                    <div className='char-box pikachu' style={{ left: `888px`, top: `405px` }}></div>}
+                    <div className='char-box' style={{ left: `888px`, top: `405px`, width: `60px`, height: `50px` }}></div>}
                 {level === '1' && potentialChars.filter(char => char.name === 'Psyduck' && char.level === '1')[0].isFound &&
-                    <div className='char-box psyduck' style={{ left: `247px`, top: `255px` }}></div>}
+                    <div className='char-box' style={{ left: `247px`, top: `255px`, width: `47px`, height: `47px` }}></div>}
                 {level === '1' && potentialChars.filter(char => char.name === 'Blissey' && char.level === '1')[0].isFound &&
-                    <div className='char-box blissey' style={{ left: `638px`, top: `588px` }}></div>}
+                    <div className='char-box' style={{ left: `638px`, top: `588px`, width: `65px`, height: `70px` }}></div>}
+                {level === '2' && potentialChars.filter(char => char.name === 'Pikachu' && char.level === '2')[0].isFound &&
+                    <div className='char-box' style={{ left: `290px`, top: `950px`, width: `40px`, height: `50px` }}></div>}
+                {level === '2' && potentialChars.filter(char => char.name === 'Metapod' && char.level === '2')[0].isFound &&
+                    <div className='char-box' style={{ left: `735px`, top: `742px`, width: `28px`, height: `40px` }}></div>}
+                {level === '2' && potentialChars.filter(char => char.name === 'Dragonair' && char.level === '2')[0].isFound &&
+                    <div className='char-box' style={{ left: `770px`, top: `232px`, width: `28px`, height: `45px` }}></div>}
+                {level === '3' && potentialChars.filter(char => char.name === 'Pikachu' && char.level === '3')[0].isFound &&
+                    <div className='char-box' style={{ left: `195px`, top: `608px`, width: `48px`, height: `45px` }}></div>}
+                {level === '3' && potentialChars.filter(char => char.name === 'Teddiursa' && char.level === '3')[0].isFound &&
+                    <div className='char-box' style={{ left: `1158px`, top: `657px`, width: `33px`, height: `37px` }}></div>}
+                {level === '3' && potentialChars.filter(char => char.name === 'Meowth' && char.level === '3')[0].isFound &&
+                    <div className='char-box' style={{ left: `715px`, top: `323px`, width: `30px`, height: `43px` }}></div>}
             </div>
         </div>
     );
 }
 
 export default Home;
+
+// Level 1
+// Pikachu
+// x: 897-958
+// y: 664-715
+// Psyduck
+// x: 256-304
+// y: 514-562
+// Blissey
+// x: 647-713
+// y: 847-918
+
+// Level 2
+// Pikachu
+// x: 299-340
+// y: 1209-1260
+// Metapod
+// x: 744-1010
+// y: 1001-1042
+// Dragonair
+// x: 779-808
+// y: 491-537
+
+// Level 3
+// Pikachu
+// x: 204-253
+// y: 867-913
+// Teddiursa
+// x: 1167-1201
+// y: 916-954
+// Meowth
+// x: 724-755
+// y: 582-626

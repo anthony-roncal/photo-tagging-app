@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 
-const Stopwatch = ({ isActive, setIsActive, time, setTime, formatTime }) => {
+const Stopwatch = ({ isActive, setIsActive, time, setTime }) => {
 
     const startStopwatch = () => {
         setIsActive(true);
@@ -38,7 +38,7 @@ const Stopwatch = ({ isActive, setIsActive, time, setTime, formatTime }) => {
                 <button onClick={stopStopwatch}>Stop Stopwatch</button>
                 <button onClick={resetStopwatch}>Reset Stopwatch</button>
             </div>
-            <p>{formatTime(time)}</p>
+            <p>{time}</p>
         </>
     );
 };

@@ -45,3 +45,9 @@
     position: absolute;
     border: 3px solid red;
 }
+
+.debug {
+    position: absolute;
+    left: 0;
+    top: 50%;
+}

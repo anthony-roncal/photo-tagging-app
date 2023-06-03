@@ -21,7 +21,7 @@ const Home = () => {
     const [imgUrl, setImgUrl] = useState('');
     const [isActive, setIsActive] = useState(false);
     const [time, setTime] = useState(0);
-    const [characters, setPotentialChars] = useState([
+    const [characters, setCharacters] = useState([
         { level: '1', name: 'Pikachu', isFound: false },
         { level: '1', name: 'Psyduck', isFound: false },
         { level: '1', name: 'Blissey', isFound: false },
@@ -55,7 +55,6 @@ const Home = () => {
         setShowDropdown(!showDropdown);
         if (e.target.className === 'play-img')
             setDropdownCoords({ left: e.pageX - leftOffset, top: e.pageY - topOffset });
-        console.log(`${e.pageX}, ${e.pageY}`);
         setClickCoords({x: (e.pageX - leftOffset), y: e.pageY});
     }
 
@@ -94,7 +93,7 @@ const Home = () => {
             <div className='play-area' >
                 <img className='play-img' src={imgUrl} onClick={handleImageClick} />
                 {showDropdown && <CharacterDropdown characters={characters}
-                    setPotentialChars={setPotentialChars} level={level} position={dropdownCoords}
+                    setCharacters={setCharacters} level={level} position={dropdownCoords}
                     showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords}/>}
                 {level === '1' && characters.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound &&
                     <div className='char-box' style={{ left: `888px`, top: `405px`, width: `60px`, height: `50px` }}></div>}

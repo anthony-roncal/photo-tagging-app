@@ -7,7 +7,7 @@ import {
     getDocs
 } from 'firebase/firestore';
 
-const CharacterDropdown = ({ characters, setPotentialChars, level, position, showDropdown, setShowDropdown, clickCoords }) => {
+const CharacterDropdown = ({ characters, setCharacters, level, position, showDropdown, setShowDropdown, clickCoords }) => {
     const getCoordinates = async (charName) => {
         const q = query(collection(getFirestore(), 'coordinates'), where('level', '==', level.toString()), where('name', '==', charName));
 
@@ -29,7 +29,7 @@ const CharacterDropdown = ({ characters, setPotentialChars, level, position, sho
                     console.log('found!');
                     selectedChar.isFound = true;
                     let index = characters.indexOf(selectedChar);
-                    setPotentialChars(characters.slice(0, index).concat(selectedChar).concat(characters.slice(index + 1)));
+                    setCharacters(characters.slice(0, index).concat(selectedChar).concat(characters.slice(index + 1)));
                 }
                 else
                     console.log('miss');

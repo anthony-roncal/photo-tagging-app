@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useEffect } from 'react';
 
 const Stopwatch = ({ isActive, setIsActive, time, setTime }) => {
 
@@ -33,12 +33,12 @@ const Stopwatch = ({ isActive, setIsActive, time, setTime }) => {
 
     return (
         <>
-            <div className='btn-row'>
+            {/* <div className='btn-row'>
                 <button onClick={startStopwatch}>Start Stopwatch</button>
                 <button onClick={stopStopwatch}>Stop Stopwatch</button>
                 <button onClick={resetStopwatch}>Reset Stopwatch</button>
-            </div>
-            <p>{time}</p>
+            </div> */}
+            <p className='stopwatch'>{time}</p>
         </>
     );
 };

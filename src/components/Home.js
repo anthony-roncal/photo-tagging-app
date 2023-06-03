@@ -20,6 +20,7 @@ const Home = () => {
     const [level, setLevel] = useState('0');
     const [imgUrl, setImgUrl] = useState('');
     const [isActive, setIsActive] = useState(false);
+    const [isGameOver, setIsGameOver] = useState(false);
     const [time, setTime] = useState(0);
     const [characters, setCharacters] = useState([
         { level: '1', name: 'Pikachu', isFound: false },
@@ -34,19 +35,29 @@ const Home = () => {
     ]);
     const [dropdownCoords, setDropdownCoords] = useState({ left: 0, top: 0 });
     const [showDropdown, setShowDropdown] = useState(false);
-    const [clickCoords, setClickCoords] = useState({x: 0, y: 0});
+    const [clickCoords, setClickCoords] = useState({ x: 0, y: 0 });
 
     const handleLevelButtonClick = (e) => {
         let selectedLevel = e.target.dataset.level;
         setLevel(selectedLevel);
+        setTime(0);
+        setIsGameOver(false);
+        setShowDropdown(false);
         setImgUrl(LOADING_IMAGE_URL);
         getImageUrl(`poke${selectedLevel}.webp`);
     };
 
     const getImageUrl = async (filePath) => {
+        console.log('getting image url...');
         const newImageRef = ref(getStorage(), filePath);
         const publicImageUrl = await getDownloadURL(newImageRef);
+        console.log(`image url retrieved: ${publicImageUrl}`);
         setImgUrl(publicImageUrl);
+    };
+
+    const startGame = () => {
+        setIsActive(true);
+        setIsGameOver(false);
     };
 
     const handleImageClick = (e) => {
@@ -55,8 +66,8 @@ const Home = () => {
         setShowDropdown(!showDropdown);
         if (e.target.className === 'play-img')
             setDropdownCoords({ left: e.pageX - leftOffset, top: e.pageY - topOffset });
-        setClickCoords({x: (e.pageX - leftOffset), y: e.pageY});
-    }
+        setClickCoords({ x: (e.pageX - leftOffset), y: e.pageY });
+    };
 
     const formatTime = (timeInMs) => {
         let min = ('0' + Math.floor((timeInMs / 60000))).slice(-2);
@@ -65,11 +76,28 @@ const Home = () => {
         return `${min}:${sec}:${ms}`;
     };
 
-    async function saveScore() {
+    useEffect(() => {
+        let allFound = true;
+        characters.filter(char => char.level === level).forEach(char => {
+            if (!char.isFound)
+                allFound = false;
+            setIsGameOver(false);
+        });
+        if (allFound && isActive) {
+            endGame();
+        }
+    }, [characters]);
+
+    const endGame = () => {
+        setIsActive(false);
+        setIsGameOver(true);
+        //TODO: build prompt to ask player name
+    };
+
+    async function saveScore(playerName) {
         try {
             await addDoc(collection(getFirestore(), 'scores'), {
-                //TODO: build prompt to ask player name
-                name: 'AAA',
+                name: playerName,
                 level: level,
                 time: formatTime(time),
                 timestamp: serverTimestamp()
@@ -78,41 +106,71 @@ const Home = () => {
         catch (error) {
             console.error('Error writing new message to Firebase Database', error);
         }
-    }
+    };
 
     return (
         <div className="Home">
-            <div className='btn-row'>
-                <button onClick={handleLevelButtonClick} data-level={'1'}>Level 1</button>
-                <button onClick={handleLevelButtonClick} data-level={'2'}>Level 2</button>
-                <button onClick={handleLevelButtonClick} data-level={'3'}>Level 3</button>
+            <div className='menu-area'>
+                <div className='btn-row'>
+                    <button onClick={handleLevelButtonClick} data-level={'1'}>Level 1</button>
+                    <button onClick={handleLevelButtonClick} data-level={'2'}>Level 2</button>
+                    <button onClick={handleLevelButtonClick} data-level={'3'}>Level 3</button>
+                </div>
+                {/* <button onClick={saveScore}>Test Score</button> */}
+                {(level > 0) && <h1>Level {level}</h1>}
+                {level !== '0' && <Stopwatch isActive={isActive} setIsActive={setIsActive} time={formatTime(time)} setTime={setTime} />}
             </div>
-            <Stopwatch isActive={isActive} setIsActive={setIsActive} time={formatTime(time)} setTime={setTime} />
-            <button onClick={saveScore}>Test Score</button>
-            {(level > 0) && <h1>Level {level}</h1>}
             <div className='play-area' >
-                <img className='play-img' src={imgUrl} onClick={handleImageClick} />
+                {level !== '0' && !isActive && !isGameOver && <button className='start' onClick={startGame}>Start</button>}
+                {(isActive || isGameOver) && <img className='play-img' src={imgUrl} onClick={handleImageClick} />}
                 {showDropdown && <CharacterDropdown characters={characters}
                     setCharacters={setCharacters} level={level} position={dropdownCoords}
-                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords}/>}
-                {level === '1' && characters.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound &&
-                    <div className='char-box' style={{ left: `888px`, top: `405px`, width: `60px`, height: `50px` }}></div>}
-                {level === '1' && characters.filter(char => char.name === 'Psyduck' && char.level === '1')[0].isFound &&
-                    <div className='char-box' style={{ left: `247px`, top: `255px`, width: `47px`, height: `47px` }}></div>}
-                {level === '1' && characters.filter(char => char.name === 'Blissey' && char.level === '1')[0].isFound &&
-                    <div className='char-box' style={{ left: `638px`, top: `588px`, width: `65px`, height: `70px` }}></div>}
-                {level === '2' && characters.filter(char => char.name === 'Pikachu' && char.level === '2')[0].isFound &&
-                    <div className='char-box' style={{ left: `290px`, top: `950px`, width: `40px`, height: `50px` }}></div>}
-                {level === '2' && characters.filter(char => char.name === 'Metapod' && char.level === '2')[0].isFound &&
-                    <div className='char-box' style={{ left: `735px`, top: `742px`, width: `28px`, height: `40px` }}></div>}
-                {level === '2' && characters.filter(char => char.name === 'Dragonair' && char.level === '2')[0].isFound &&
-                    <div className='char-box' style={{ left: `770px`, top: `232px`, width: `28px`, height: `45px` }}></div>}
-                {level === '3' && characters.filter(char => char.name === 'Pikachu' && char.level === '3')[0].isFound &&
-                    <div className='char-box' style={{ left: `195px`, top: `608px`, width: `48px`, height: `45px` }}></div>}
-                {level === '3' && characters.filter(char => char.name === 'Teddiursa' && char.level === '3')[0].isFound &&
-                    <div className='char-box' style={{ left: `1158px`, top: `657px`, width: `33px`, height: `37px` }}></div>}
-                {level === '3' && characters.filter(char => char.name === 'Meowth' && char.level === '3')[0].isFound &&
-                    <div className='char-box' style={{ left: `715px`, top: `323px`, width: `30px`, height: `43px` }}></div>}
+                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords} />}
+                {
+                    level === '1' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound
+                    && <div className='char-box' style={{ left: `888px`, top: `405px`, width: `60px`, height: `50px` }}></div>
+                }
+                {
+                    level === '1' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Psyduck' && char.level === '1')[0].isFound
+                    && <div className='char-box' style={{ left: `247px`, top: `255px`, width: `47px`, height: `47px` }}></div>
+                }
+                {
+                    level === '1' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Blissey' && char.level === '1')[0].isFound
+                    && <div className='char-box' style={{ left: `638px`, top: `588px`, width: `65px`, height: `70px` }}></div>
+                }
+                {
+                    level === '2' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Pikachu' && char.level === '2')[0].isFound
+                    && <div className='char-box' style={{ left: `290px`, top: `950px`, width: `40px`, height: `50px` }}></div>
+                }
+                {
+                    level === '2' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Metapod' && char.level === '2')[0].isFound
+                    && <div className='char-box' style={{ left: `735px`, top: `742px`, width: `28px`, height: `40px` }}></div>
+                }
+                {
+                    level === '2' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Dragonair' && char.level === '2')[0].isFound
+                    && <div className='char-box' style={{ left: `770px`, top: `232px`, width: `28px`, height: `45px` }}></div>
+                }
+                {
+                    level === '3' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Pikachu' && char.level === '3')[0].isFound
+                    && <div className='char-box' style={{ left: `195px`, top: `608px`, width: `48px`, height: `45px` }}></div>
+                }
+                {
+                    level === '3' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Teddiursa' && char.level === '3')[0].isFound
+                    && <div className='char-box' style={{ left: `1158px`, top: `657px`, width: `33px`, height: `37px` }}></div>
+                }
+                {
+                    level === '3' && (isActive || isGameOver)
+                    && characters.filter(char => char.name === 'Meowth' && char.level === '3')[0].isFound
+                    && <div className='char-box' style={{ left: `715px`, top: `323px`, width: `30px`, height: `43px` }}></div>
+                }
 
                 {/* <div className='debug'>
                     <p>Click: {clickCoords.x}, {clickCoords.y}</p>

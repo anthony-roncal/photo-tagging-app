@@ -7,6 +7,11 @@
 .btn-row {
     display: flex;
     justify-content: center;
+    gap: 20px;
+}
+
+.menu-area {
+    height: 163px;
 }
 
 .play-area {
@@ -44,6 +49,10 @@
 .char-box {
     position: absolute;
     border: 3px solid red;
+}
+
+.stopwatch {
+    font-size: 30px;
 }
 
 .debug {

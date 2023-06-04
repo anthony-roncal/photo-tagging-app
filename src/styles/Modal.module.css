@@ -2,20 +2,18 @@
     background-color: rgba(0, 0, 0, 0.2);
     width: 100vw;
     height: 100vh;
-    z-index: 2;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
+    z-index: 1;
+    top: 0;
+    position: fixed;
 }
 
 .modal {
     width: 250px;
-    height: 170px;
+    height: 190px;
     background: white;
     color: white;
     z-index: 10;
-    border-radius: 16px;
+    border-radius: 7px;
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
     position: fixed;
     top: 50%;
@@ -47,6 +45,17 @@
     text-align: center;
 }
 
+.modalContent input {
+    border: none;
+    margin-top: 10px;
+    border-bottom: 1px solid black;
+    outline: none;
+    line-height: 20px;
+    font-size: 18px;
+    text-align: center;
+    width: 50%;
+}
+
 .modalActions {
     position: absolute;
     bottom: 2px;
@@ -58,30 +67,6 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-
-.closeBtn {
-    cursor: pointer;
-    font-weight: 500;
-    padding: 4px 8px;
-    border-radius: 8px;
-    border: none;
-    font-size: 18px;
-    color: #2c3e50;
-    background: white;
-    transition: all 0.25s ease;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
-    position: absolute;
-    right: 0;
-    top: 0;
-    align-self: flex-end;
-    margin-top: -7px;
-    margin-right: -7px;
-}
-
-.closeBtn:hover {
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
-    transform: translate(-4px, 4px);
 }
 
 .saveBtn {

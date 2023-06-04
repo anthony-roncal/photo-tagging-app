@@ -20,6 +20,10 @@
     justify-content: space-around;
 }
 
+.leaderboard-row > p {
+    width: 50%;
+}
+
 .leaderboard-header {
     background-color: rgb(240, 240, 240);
     font-weight: 600;

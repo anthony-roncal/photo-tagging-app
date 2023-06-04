@@ -18,11 +18,11 @@ const Modal = ({ setShowModal, time, saveScore }) => {
             <div className={styles.darkBG} onClick={() => setShowModal(false)} />
             <div className={styles.modal}>
                 <div className={styles.modalHeader}>
-                    <h5 className={styles.heading}>Completed in {time}!</h5>
+                    <h5 className={styles.heading}>Completed in {time}</h5>
                 </div>
                 <div className={styles.modalContent}>
-                    <label for="name">Enter your name to save your time!</label>
-                    <input type='text' id='name' onChange={handleInput}/>
+                    <label for="name">Save your time to the leaderboard</label>
+                    <input type='text' id='name' placeholder='Pikachu' onChange={handleInput}/>
                 </div>
                 <div className={styles.modalActions}>
                     <div className={styles.actionsContainer}>

@@ -120,7 +120,7 @@ const Home = () => {
                     <button onClick={handleLevelButtonClick} data-level={'3'}>Level 3</button>
                 </div>
                 {/* <button onClick={saveScore}>Test Score</button> */}
-                {(level > 0) && <h1>Level {level}</h1>}
+                {level !== '0' && <h1>Level {level}</h1>}
                 {level !== '0' && <Stopwatch isActive={isActive} setIsActive={setIsActive} time={formatTime(time)} setTime={setTime} />}
             </div>
             <div className='play-area' >
@@ -129,7 +129,6 @@ const Home = () => {
                 {showDropdown && <CharacterDropdown characters={characters}
                     setCharacters={setCharacters} level={level} position={dropdownCoords}
                     showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords} />}
-
                 {characters.filter(char => char.level === level).map(char => {
                     return (
                         (isActive || isGameOver) && char.isFound

@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import Stopwatch from './Stopwatch';
 import CharacterDropdown from './CharacterDropdown';
+import Modal from './Modal';
 
 const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
 
@@ -23,19 +24,20 @@ const Home = () => {
     const [isGameOver, setIsGameOver] = useState(false);
     const [time, setTime] = useState(0);
     const [characters, setCharacters] = useState([
-        { level: '1', name: 'Pikachu', isFound: false },
-        { level: '1', name: 'Psyduck', isFound: false },
-        { level: '1', name: 'Blissey', isFound: false },
-        { level: '2', name: 'Pikachu', isFound: false },
-        { level: '2', name: 'Metapod', isFound: false },
-        { level: '2', name: 'Dragonair', isFound: false },
-        { level: '3', name: 'Pikachu', isFound: false },
-        { level: '3', name: 'Teddiursa', isFound: false },
-        { level: '3', name: 'Meowth', isFound: false }
+        { level: '1', name: 'Pikachu', isFound: false, left: `888px`, top: `405px`, width: `60px`, height: `50px` },
+        { level: '1', name: 'Psyduck', isFound: false, left: `247px`, top: `255px`, width: `47px`, height: `47px` },
+        { level: '1', name: 'Blissey', isFound: false, left: `638px`, top: `588px`, width: `65px`, height: `70px` },
+        { level: '2', name: 'Pikachu', isFound: false, left: `290px`, top: `950px`, width: `40px`, height: `50px` },
+        { level: '2', name: 'Metapod', isFound: false, left: `735px`, top: `742px`, width: `28px`, height: `40px` },
+        { level: '2', name: 'Dragonair', isFound: false, left: `770px`, top: `232px`, width: `28px`, height: `45px` },
+        { level: '3', name: 'Pikachu', isFound: false, left: `195px`, top: `608px`, width: `48px`, height: `45px` },
+        { level: '3', name: 'Teddiursa', isFound: false, left: `1158px`, top: `657px`, width: `33px`, height: `37px` },
+        { level: '3', name: 'Meowth', isFound: false, left: `715px`, top: `323px`, width: `30px`, height: `43px` }
     ]);
     const [dropdownCoords, setDropdownCoords] = useState({ left: 0, top: 0 });
     const [showDropdown, setShowDropdown] = useState(false);
     const [clickCoords, setClickCoords] = useState({ x: 0, y: 0 });
+    const [showModal, setShowModal] = useState(false);
 
     const handleLevelButtonClick = (e) => {
         let selectedLevel = e.target.dataset.level;
@@ -91,7 +93,7 @@ const Home = () => {
     const endGame = () => {
         setIsActive(false);
         setIsGameOver(true);
-        //TODO: build prompt to ask player name
+        setShowModal(true);
     };
 
     async function saveScore(playerName) {
@@ -110,6 +112,7 @@ const Home = () => {
 
     return (
         <div className="Home">
+            {showModal && <Modal setShowModal={setShowModal} time={formatTime(time)} saveScore={saveScore} />}
             <div className='menu-area'>
                 <div className='btn-row'>
                     <button onClick={handleLevelButtonClick} data-level={'1'}>Level 1</button>
@@ -126,51 +129,18 @@ const Home = () => {
                 {showDropdown && <CharacterDropdown characters={characters}
                     setCharacters={setCharacters} level={level} position={dropdownCoords}
                     showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords} />}
-                {
-                    level === '1' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Pikachu' && char.level === '1')[0].isFound
-                    && <div className='char-box' style={{ left: `888px`, top: `405px`, width: `60px`, height: `50px` }}></div>
-                }
-                {
-                    level === '1' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Psyduck' && char.level === '1')[0].isFound
-                    && <div className='char-box' style={{ left: `247px`, top: `255px`, width: `47px`, height: `47px` }}></div>
-                }
-                {
-                    level === '1' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Blissey' && char.level === '1')[0].isFound
-                    && <div className='char-box' style={{ left: `638px`, top: `588px`, width: `65px`, height: `70px` }}></div>
-                }
-                {
-                    level === '2' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Pikachu' && char.level === '2')[0].isFound
-                    && <div className='char-box' style={{ left: `290px`, top: `950px`, width: `40px`, height: `50px` }}></div>
-                }
-                {
-                    level === '2' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Metapod' && char.level === '2')[0].isFound
-                    && <div className='char-box' style={{ left: `735px`, top: `742px`, width: `28px`, height: `40px` }}></div>
-                }
-                {
-                    level === '2' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Dragonair' && char.level === '2')[0].isFound
-                    && <div className='char-box' style={{ left: `770px`, top: `232px`, width: `28px`, height: `45px` }}></div>
-                }
-                {
-                    level === '3' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Pikachu' && char.level === '3')[0].isFound
-                    && <div className='char-box' style={{ left: `195px`, top: `608px`, width: `48px`, height: `45px` }}></div>
-                }
-                {
-                    level === '3' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Teddiursa' && char.level === '3')[0].isFound
-                    && <div className='char-box' style={{ left: `1158px`, top: `657px`, width: `33px`, height: `37px` }}></div>
-                }
-                {
-                    level === '3' && (isActive || isGameOver)
-                    && characters.filter(char => char.name === 'Meowth' && char.level === '3')[0].isFound
-                    && <div className='char-box' style={{ left: `715px`, top: `323px`, width: `30px`, height: `43px` }}></div>
-                }
+
+                {characters.filter(char => char.level === level).map(char => {
+                    return (
+                        (isActive || isGameOver) && char.isFound
+                        && <div className='char-box' style={{
+                            left: char.left,
+                            top: char.top,
+                            width: char.width,
+                            height: char.height
+                        }}></div>
+                    );
+                })}
 
                 {/* <div className='debug'>
                     <p>Click: {clickCoords.x}, {clickCoords.y}</p>

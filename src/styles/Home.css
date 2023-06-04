@@ -18,6 +18,11 @@
     position: relative;
     min-width: 1224px;
     max-width: 1224px;
+    z-index: 0;
+}
+
+.play-img {
+    z-index: 0;
 }
 
 .dropdown-menu {
@@ -49,6 +54,7 @@
 .char-box {
     position: absolute;
     border: 3px solid red;
+    z-index: 1;
 }
 
 .stopwatch {

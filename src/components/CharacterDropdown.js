@@ -42,9 +42,8 @@ const CharacterDropdown = ({ characters, setCharacters, level, position, showDro
         <div className='dropdown-menu' style={{ left: `${position.left}px`, top: `${position.top}px` }}>
             <ul>
                 {characters.filter(char => char.level === level).map(char => {
-                    if (!char.isFound)
                         return (
-                            <li data-char={char.name} onClick={handleCharSelect} key={char.name + char.level}>{char.name}</li>
+                            !char.isFound && <li data-char={char.name} onClick={handleCharSelect} key={char.name + char.level}>{char.name}</li>
                         );
                 })}
             </ul>

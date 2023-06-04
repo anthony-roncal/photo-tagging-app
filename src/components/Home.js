@@ -119,7 +119,6 @@ const Home = () => {
                     <button onClick={handleLevelButtonClick} data-level={'2'}>Level 2</button>
                     <button onClick={handleLevelButtonClick} data-level={'3'}>Level 3</button>
                 </div>
-                {/* <button onClick={saveScore}>Test Score</button> */}
                 {level !== '0' && <h1>Level {level}</h1>}
                 {level !== '0' && <Stopwatch isActive={isActive} setIsActive={setIsActive} time={formatTime(time)} setTime={setTime} />}
             </div>
@@ -140,10 +139,6 @@ const Home = () => {
                         }}></div>
                     );
                 })}
-
-                {/* <div className='debug'>
-                    <p>Click: {clickCoords.x}, {clickCoords.y}</p>
-                </div> */}
             </div>
         </div>
     );

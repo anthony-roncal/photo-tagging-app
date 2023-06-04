@@ -11,10 +11,9 @@ import {
 
 const Leaderboard = () => {
     const [scores, setScores] = useState([]);
-    // function loadScores() {
     const recentScoresQuery = query(collection(getFirestore(), 'scores'), orderBy('time', 'asc'), limit(12));
 
-    // Start listening to the query.
+    // Start listening to the query
     onSnapshot(recentScoresQuery, function (snapshot) {
         snapshot.docChanges().forEach(function (change) {
             var score = change.doc.data();
@@ -26,7 +25,6 @@ const Leaderboard = () => {
             }
         });
     });
-    // }
 
     return (
         <div className='leaderboard'>

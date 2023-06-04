@@ -32,14 +32,7 @@ const Stopwatch = ({ isActive, setIsActive, time, setTime }) => {
     }, [isActive]);
 
     return (
-        <>
-            {/* <div className='btn-row'>
-                <button onClick={startStopwatch}>Start Stopwatch</button>
-                <button onClick={stopStopwatch}>Stop Stopwatch</button>
-                <button onClick={resetStopwatch}>Reset Stopwatch</button>
-            </div> */}
-            <p className='stopwatch'>{time}</p>
-        </>
+        <p className='stopwatch'>{time}</p>
     );
 };
 

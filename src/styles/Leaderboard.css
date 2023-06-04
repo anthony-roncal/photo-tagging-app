@@ -3,7 +3,7 @@
     padding-left: 0;
 }
 
-.leaderboard > div {
+.leaderboard>div {
     display: flex;
     justify-content: space-around;
 }
@@ -20,7 +20,7 @@
     justify-content: space-around;
 }
 
-.leaderboard-row > p {
+.leaderboard-row>p {
     width: 50%;
 }
 

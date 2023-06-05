@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import Stopwatch from './Stopwatch';
 import CharacterDropdown from './CharacterDropdown';
+import CharacterList from './CharacterList';
 import Modal from './Modal';
 
 const LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
@@ -34,6 +35,15 @@ const Home = () => {
         { level: '3', name: 'Teddiursa', isFound: false, left: `1158px`, top: `657px`, width: `33px`, height: `37px` },
         { level: '3', name: 'Meowth', isFound: false, left: `715px`, top: `323px`, width: `30px`, height: `43px` }
     ]);
+    const [sprites, setSprites] = useState([
+        {name: 'pikachu', imgUrl: ''},
+        {name: 'psyduck', imgUrl: ''},
+        {name: 'blissey', imgUrl: ''},
+        {name: 'metapod', imgUrl: ''},
+        {name: 'dragonair', imgUrl: ''},
+        {name: 'teddiursa', imgUrl: ''},
+        {name: 'meowth', imgUrl: ''}
+    ]);
     const [dropdownCoords, setDropdownCoords] = useState({ left: 0, top: 0 });
     const [showDropdown, setShowDropdown] = useState(false);
     const [clickCoords, setClickCoords] = useState({ x: 0, y: 0 });
@@ -46,7 +56,9 @@ const Home = () => {
         setIsGameOver(false);
         setShowDropdown(false);
         setImgUrl(LOADING_IMAGE_URL);
-        getImageUrl(`poke${selectedLevel}.webp`);
+        getImageUrl(`poke${selectedLevel}.webp`).then(url => setImgUrl(url));
+        getSprites();
+        console.log(sprites);
     };
 
     const getImageUrl = async (filePath) => {
@@ -54,8 +66,14 @@ const Home = () => {
         const newImageRef = ref(getStorage(), filePath);
         const publicImageUrl = await getDownloadURL(newImageRef);
         console.log(`image url retrieved: ${publicImageUrl}`);
-        setImgUrl(publicImageUrl);
+        return publicImageUrl;
     };
+
+    const getSprites = () => {
+        sprites.map(char => {
+            getImageUrl(`${char.name}.png`).then(url => char.imgUrl = url);
+        });
+    }
 
     const startGame = () => {
         setIsActive(true);
@@ -123,22 +141,25 @@ const Home = () => {
                 {level !== '0' && <Stopwatch isActive={isActive} setIsActive={setIsActive} time={formatTime(time)} setTime={setTime} />}
             </div>
             <div className='play-area' >
-                {level !== '0' && !isActive && !isGameOver && <button className='start' onClick={startGame}>Start</button>}
-                {(isActive || isGameOver) && <img className='play-img' src={imgUrl} onClick={handleImageClick} />}
-                {showDropdown && <CharacterDropdown characters={characters}
-                    setCharacters={setCharacters} level={level} position={dropdownCoords}
-                    showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords} />}
-                {characters.filter(char => char.level === level).map(char => {
-                    return (
-                        (isActive || isGameOver) && char.isFound
-                        && <div className='char-box' style={{
-                            left: char.left,
-                            top: char.top,
-                            width: char.width,
-                            height: char.height
-                        }}></div>
-                    );
-                })}
+                <div>
+                    {level !== '0' && !isActive && !isGameOver && <button className='start' onClick={startGame}>Start</button>}
+                    {(isActive || isGameOver) && <img className='play-img' src={imgUrl} onClick={handleImageClick} />}
+                    {showDropdown && <CharacterDropdown characters={characters}
+                        setCharacters={setCharacters} level={level} position={dropdownCoords}
+                        showDropdown={showDropdown} setShowDropdown={setShowDropdown} clickCoords={clickCoords} />}
+                    {characters.filter(char => char.level === level).map(char => {
+                        return (
+                            (isActive || isGameOver) && char.isFound
+                            && <div className='char-box' style={{
+                                left: char.left,
+                                top: char.top,
+                                width: char.width,
+                                height: char.height
+                            }}></div>
+                        );
+                    })}
+                    {isActive && <CharacterList characters={characters.filter(char => char.level === level)} sprites={sprites} />}
+                </div>
             </div>
         </div>
     );
